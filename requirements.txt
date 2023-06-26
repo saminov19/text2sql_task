@@ -1,0 +1,4 @@
+clickhouse-connect==0.4.5
+transformers==4.29.1
+typing_extensions==4.5.0
+typing-inspect==0.8.0
