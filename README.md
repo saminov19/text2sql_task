@@ -1,5 +1,5 @@
 # Text-to-SQL Conversion
-This project demonstrates a Text-to-SQL conversion system using ClickHouse and OpenAI GPT model. The system takes user prompts or questions, generates SQL queries, executes them on a ClickHouse database, and returns the query results.
+This project demonstrates a Text-to-SQL conversion system using ClickHouse and transformer-based model. The system takes user prompts or questions, generates SQL queries, executes them on a ClickHouse database, and returns the query results.
 
 ## Installation
 Clone the repository:
