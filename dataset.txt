@@ -1,0 +1,586 @@
+dataset = [
+    {
+        'question': "What is the total sales for each product?",
+        'sql_query': "SELECT product, SUM(sales) AS total_sales FROM sales_table GROUP BY product;"
+    },
+    {
+        'question': "How many orders were placed on a specific date?",
+        'sql_query': "SELECT COUNT(*) AS order_count FROM orders_table WHERE date = '2023-06-17';"
+    },
+    {
+        'question': "Find the average rating for a given product category.",
+        'sql_query': "SELECT category, AVG(rating) AS average_rating FROM products_table WHERE category = 'electronics';"
+    },
+    {
+        'question': "Retrieve all customers who made a purchase in the last 30 days.",
+        'sql_query': "SELECT * FROM customers_table WHERE purchase_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY);"
+    },
+    {
+        'question': "List the top 10 highest revenue-generating products.",
+        'sql_query': "SELECT product, revenue FROM products_table ORDER BY revenue DESC LIMIT 10;"
+    },
+    {
+        'question': "Find the total quantity sold for each product category.",
+        'sql_query': "SELECT category, SUM(quantity) AS total_quantity FROM sales_table GROUP BY category;"
+    },
+    {
+        'question': "Retrieve all active users with a subscription that expires in the next 7 days.",
+        'sql_query': "SELECT * FROM users_table WHERE subscription_expiry <= DATE_ADD(CURRENT_DATE(), INTERVAL 7 DAY) AND status = 'active';"
+    },
+    {
+        'question': "How many unique customers have made a purchase in the past month?",
+        'sql_query': "SELECT COUNT(DISTINCT customer_id) AS unique_customers FROM sales_table WHERE purchase_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH);"
+    },
+    {
+        'question': "Find the average rating for products in a specific price range.",
+        'sql_query': "SELECT AVG(rating) AS average_rating FROM products_table WHERE price BETWEEN 50 AND 100;"
+    },
+    {
+        'question': "Retrieve the order details for a specific customer.",
+        'sql_query': "SELECT * FROM orders_table WHERE customer_id = 12345;"
+    },
+    {
+        'question': "List the top 5 best-selling products in terms of quantity sold.",
+        'sql_query': "SELECT product, SUM(quantity) AS total_quantity FROM sales_table GROUP BY product ORDER BY total_quantity DESC LIMIT 5;"
+    },
+    {
+        'question': "Find the total revenue generated for a specific product.",
+        'sql_query': "SELECT product, SUM(revenue) AS total_revenue FROM sales_table WHERE product = 'ABC' GROUP BY product;"
+    },
+    {
+        'question': "Retrieve all customers who have not made a purchase in the last 90 days.",
+        'sql_query': "SELECT * FROM customers_table WHERE purchase_date < DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY);"
+    },
+    {
+        'question': "How many orders were placed by each customer?",
+        'sql_query': "SELECT customer_id, COUNT(*) AS order_count FROM orders_table GROUP BY customer_id;"
+    },
+    {
+        'question': "Find the most recent order for each customer.",
+        'sql_query': "SELECT * FROM orders_table WHERE (customer_id, order_date) IN (SELECT customer_id, MAX(order_date) FROM orders_table GROUP BY customer_id);"
+    },
+    {
+        'question': "Retrieve the products that are out of stock.",
+        'sql_query': "SELECT * FROM products_table WHERE stock_quantity = 0;"
+    },
+    {
+        'question': "List the top 3 customers with the highest total purchase amount.",
+        'sql_query': "SELECT customer_id, SUM(total_amount) AS total_purchase_amount FROM orders_table GROUP BY customer_id ORDER BY total_purchase_amount DESC LIMIT 3;"
+    },
+    {
+        'question': "Find the total revenue generated for each month in the past year.",
+        'sql_query': "SELECT DATE_TRUNC('month', order_date) AS month, SUM(revenue) AS total_revenue FROM orders_table WHERE order_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR) GROUP BY month;"
+    },
+    {
+        'question': "Retrieve all products with a price higher than the average price.",
+        'sql_query': "SELECT * FROM products_table WHERE price > (SELECT AVG(price) FROM products_table);"
+    },
+    {
+        'question': "Find the customers who made a purchase of a specific product.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE product = 'ABC';"
+    },
+    {
+        'question': "List the top 5 most viewed products.",
+        'sql_query': "SELECT product, views FROM products_table ORDER BY views DESC LIMIT 5;"
+    },
+    {
+        'question': "Retrieve the orders that contain a specific item.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%item_name%';"
+    },
+    {
+        'question': "Find the customers who have made purchases on consecutive days.",
+        'sql_query': "SELECT DISTINCT customer_id FROM orders_table WHERE DATE_DIFF(order_date, LAG(order_date, 1) OVER (PARTITION BY customer_id ORDER BY order_date)) = 1;"
+    },
+    {
+        'question': "Retrieve the products that were added to the catalog in the last week.",
+        'sql_query': "SELECT * FROM products_table WHERE catalog_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 WEEK);"
+    },
+    {
+        'question': "Find the customers who have made purchases in all available product categories.",
+        'sql_query': "SELECT customer_id FROM sales_table GROUP BY customer_id HAVING COUNT(DISTINCT category) = (SELECT COUNT(DISTINCT category) FROM products_table);"
+    },
+    {
+        'question': "List the top 10 highest-rated products.",
+        'sql_query': "SELECT product, rating FROM products_table ORDER BY rating DESC LIMIT 10;"
+    },
+    {
+        'question': "Find the average order value for each customer.",
+        'sql_query': "SELECT customer_id, AVG(order_value) AS average_order_value FROM orders_table GROUP BY customer_id;"
+    },
+    {
+        'question': "Retrieve all customers who have made a purchase within a specific date range.",
+        'sql_query': "SELECT * FROM customers_table WHERE purchase_date BETWEEN '2023-01-01' AND '2023-12-31';"
+    },
+    {
+        'question': "Find the orders with a total amount higher than a specified threshold.",
+        'sql_query': "SELECT * FROM orders_table WHERE total_amount > 1000;"
+    },
+    {
+        'question': "Retrieve the products that have not been sold yet.",
+        'sql_query': "SELECT * FROM products_table WHERE product_id NOT IN (SELECT product_id FROM sales_table);"
+    },
+    {
+        'question': "Find the total revenue generated by each sales representative.",
+        'sql_query': "SELECT sales_rep, SUM(revenue) AS total_revenue FROM sales_table GROUP BY sales_rep;"
+    },
+    {
+        'question': "List the orders that contain at least three different items.",
+        'sql_query': "SELECT * FROM orders_table WHERE COUNT(DISTINCT items) >= 3;"
+    },
+    {
+        'question': "Find the customers who made a purchase within a specific time period and spent more than a specified amount.",
+        'sql_query': "SELECT * FROM customers_table WHERE purchase_date BETWEEN '2023-01-01' AND '2023-12-31' AND total_spent > 500;"
+    },
+    {
+        'question': "Retrieve the products that were last restocked before a specific date.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date < '2023-06-01' ORDER BY restock_date DESC LIMIT 10;"
+    },
+    {
+        'question': "Find the average revenue per day for each month in the past year.",
+        'sql_query': "SELECT DATE_TRUNC('month', order_date) AS month, AVG(revenue) AS average_revenue_per_day FROM orders_table WHERE order_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR) GROUP BY month;"
+    },
+    {
+        'question': "Retrieve the orders placed by customers who have not made a purchase in the last 30 days.",
+        'sql_query': "SELECT * FROM orders_table WHERE customer_id IN (SELECT customer_id FROM customers_table WHERE purchase_date < DATE_SUB(CURRENT_DATE(), INTERVAL 30 DAY));"
+    },
+    {
+        'question': "List the customers who have made more than one purchase in a single day.",
+        'sql_query': "SELECT customer_id, COUNT(DISTINCT DATE(order_date)) AS purchases_per_day FROM orders_table GROUP BY customer_id HAVING purchases_per_day > 1;"
+    },
+    {
+        'question': "Find the customers who have made purchases in all months of the year.",
+        'sql_query': "SELECT customer_id FROM orders_table GROUP BY customer_id HAVING COUNT(DISTINCT DATE_TRUNC('month', order_date)) = 12;"
+    },
+    {
+        'question': "Retrieve the products that have not been restocked in the last 90 days.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date < DATE_SUB(CURRENT_DATE(), INTERVAL 90 DAY);"
+    },
+    {
+        'question': "Find the customers who made a purchase in a specific month.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01';"
+    },
+    {
+        'question': "List the orders that were placed by customers who have not registered on the website.",
+        'sql_query': "SELECT * FROM orders_table WHERE customer_id NOT IN (SELECT customer_id FROM customers_table);"
+    },
+    {
+        'question': "Find the customers who have made purchases on consecutive months.",
+        'sql_query': "SELECT DISTINCT customer_id FROM orders_table WHERE DATE_TRUNC('month', order_date) IN (SELECT DATE_ADD(MIN(order_date), INTERVAL i MONTH) FROM numbers_table WHERE i < 12);"
+    },
+    {
+        'question': "Retrieve the products that were last restocked after a specific date.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date > '2023-01-01' ORDER BY restock_date DESC LIMIT 10;"
+    },
+    {
+        'question': "Find the customers who made a purchase of a specific product category.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE category = 'electronics';"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%';"
+    },
+    {
+        'question': "Find the customers who have made purchases on the same day of the week.",
+        'sql_query': "SELECT customer_id FROM sales_table GROUP BY customer_id HAVING COUNT(DISTINCT DAYOFWEEK(purchase_date)) = 1;"
+    },
+    {
+        'question': "Retrieve the orders placed on weekends.",
+        'sql_query': "SELECT * FROM orders_table WHERE DAYOFWEEK(order_date) IN (1, 7);"
+    },
+    {
+        'question': "Find the average order value for each month in the past year.",
+        'sql_query': "SELECT DATE_TRUNC('month', order_date) AS month, AVG(order_value) AS average_order_value FROM orders_table WHERE order_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 YEAR) GROUP BY month;"
+    },
+    {
+        'question': "Retrieve the products that have been restocked more than twice.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_count > 2;"
+    },
+    {
+        'question': "Find the customers who have made a purchase on a specific date.",
+        'sql_query': "SELECT customer_id FROM sales_table WHERE purchase_date = '2023-06-17';"
+    },
+    {
+        'question': "List the orders that contain items with a specific color.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%color_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekdays.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (SELECT DAYOFWEEK(MIN(purchase_date)) + i FROM numbers_table WHERE i < 5);"
+    },
+    {
+        'question': "Retrieve the orders that were placed within a specific time period of the day.",
+        'sql_query': "SELECT * FROM orders_table WHERE TIME(order_date) BETWEEN '08:00:00' AND '12:00:00';"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the month.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAY(purchase_date) = 15;"
+    },
+    {
+        'question': "List the orders that contain items with a specific size.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%size_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7;"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the week.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFWEEK(purchase_date) = 3;"
+    },
+    {
+        'question': "List the orders that contain items with a specific brand.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%brand_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023;"
+    },
+    {
+        'question': "Retrieve the orders that were placed after a specific time of the day.",
+        'sql_query': "SELECT * FROM orders_table WHERE TIME(order_date) > '14:00:00';"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180;"
+    },
+    {
+        'question': "List the orders that contain items with a specific type.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%type_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekdays of the same month.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (SELECT DAYOFWEEK(MIN(purchase_date)) + i FROM numbers_table WHERE i < 5) AND DATE_TRUNC('month', purchase_date) = '2023-06-01';"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH);"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month of the year.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01';"
+    },
+    {
+        'question': "List the orders that contain items with a specific material.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%material_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same year.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7;"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and are out of stock.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND stock_quantity = 0;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the month of a specific year.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAY(purchase_date) = 15 AND YEAR(purchase_date) = 2023;"
+    },
+    {
+        'question': "List the orders that contain items with a specific category.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%category_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekdays of the same month and year.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (SELECT DAYOFWEEK(MIN(purchase_date)) + i FROM numbers_table WHERE i < 5) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND YEAR(purchase_date) = 2023;"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last week and have a price higher than a specified amount.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 WEEK) AND price > 50;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute and color.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same month and year.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7;"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued or are out of stock.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True OR stock_quantity = 0;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01';"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute and brand.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%brand_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and spent more than a specified amount.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND total_amount > 1000;"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR price > 50;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and spent more than a specified amount.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND total_amount > 500;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute and type.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%type_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same month and year and spent more than a specified amount.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7 AND total_amount > 1000;"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and have a price higher than a specified amount.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND price > 50;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month and spent more than a specified amount.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND total_amount > 500;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, and brand.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium';"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last week or have a price higher than a specified amount and are in a specific category.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 WEEK) OR (price > 50 AND category = 'electronics');"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium';"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, and type.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%type_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same month and year and belong to a specific customer segment.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7 AND customer_segment = 'premium';"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and have a price higher than a specified amount or are out of stock.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND price > 50 OR stock_quantity = 0;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month and spent more than a specified amount and belong to a specific customer segment.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND total_amount > 500 AND customer_segment = 'premium';"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, and type.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000;"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True));"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, and size.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same month and year and belong to a specific customer segment and spent more than a specified amount.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7 AND customer_segment = 'premium' AND total_amount > 1000;"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and have a price higher than a specified amount or are out of stock and are in a specific category.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND price > 50 OR stock_quantity = 0 AND category = 'electronics';"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month and spent more than a specified amount and belong to a specific customer segment and have a loyalty membership.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND total_amount > 500 AND customer_segment = 'premium' AND loyalty_membership = True;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, and material.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True;"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued and have a rating above a certain threshold.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True)) AND rating > 4.5;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500 AND loyalty_membership = True AND city = 'New York';"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, and category.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York';"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and have a price higher than a specified amount or are out of stock and are in a specific category and have a rating above a certain threshold.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND price > 50 OR stock_quantity = 0 AND category = 'electronics' AND rating > 4.5;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month and spent more than a specified amount and belong to a specific customer segment and have a loyalty membership and reside in a specific city and have a preferred payment method.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND total_amount > 500 AND customer_segment = 'premium' AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card';"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, and price range.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100;"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id);"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued and have a rating above a certain threshold and are available for shipping.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True)) AND rating > 4.5 AND available_for_shipping = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, and discount applied.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000;"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and have a price higher than a specified amount or are out of stock and are in a specific category and have a rating above a certain threshold and are available for shipping and have free returns.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND price > 50 OR stock_quantity = 0 AND category = 'electronics' AND rating > 4.5 AND available_for_shipping = True AND free_returns = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month and spent more than a specified amount and belong to a specific customer segment and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND total_amount > 500 AND customer_segment = 'premium' AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, discount applied, and shipping method.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True AND shipping_method = 'express';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id);"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued and have a rating above a certain threshold and are available for shipping and have free returns and are featured.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True)) AND rating > 4.5 AND available_for_shipping = True AND free_returns = True AND featured = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5;"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, discount applied, shipping method, and payment status.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True AND shipping_method = 'express' AND payment_status = 'paid';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive weekends of the same month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DAYOFWEEK(purchase_date) IN (1, 7) AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND DATE_TRUNC('year', purchase_date) = '2023-01-01' AND DATE_DIFF(purchase_date, LAG(purchase_date, 1) OVER (PARTITION BY customer_id ORDER BY purchase_date)) = 7 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id);"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and have a price higher than a specified amount or are out of stock and are in a specific category and have a rating above a certain threshold and are available for shipping and have free returns and are featured and have received positive reviews.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND price > 50 OR stock_quantity = 0 AND category = 'electronics' AND rating > 4.5 AND available_for_shipping = True AND free_returns = True AND featured = True AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND product_id = reviews_table.product_id);"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month and spent more than a specified amount and belong to a specific customer segment and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND total_amount > 500 AND customer_segment = 'premium' AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id);"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, discount applied, shipping method, payment status, and delivery status.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True AND shipping_method = 'express' AND payment_status = 'paid' AND delivery_status = 'delivered';"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True;"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued and have a rating above a certain threshold and are available for shipping and have free returns and are featured and have received positive reviews and have a warranty.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True)) AND rating > 4.5 AND available_for_shipping = True AND free_returns = True AND featured = True AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND product_id = reviews_table.product_id) AND warranty = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id);"
+    },
+    {
+        'question': "Retrieve the products that have been discontinued and have a price higher than a specified amount or are out of stock and are in a specific category and have a rating above a certain threshold and are available for shipping and have free returns and are featured and have received positive reviews and have a warranty and are trending.",
+        'sql_query': "SELECT * FROM products_table WHERE discontinued = True AND price > 50 OR stock_quantity = 0 AND category = 'electronics' AND rating > 4.5 AND available_for_shipping = True AND free_returns = True AND featured = True AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND product_id = reviews_table.product_id) AND warranty = True AND trending = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific day of the year of a specific month and spent more than a specified amount and belong to a specific customer segment and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DAYOFYEAR(purchase_date) = 180 AND DATE_TRUNC('month', purchase_date) = '2023-06-01' AND total_amount > 500 AND customer_segment = 'premium' AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id);"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, discount applied, shipping method, payment status, delivery status, and gift wrapping option.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True AND shipping_method = 'express' AND payment_status = 'paid' AND delivery_status = 'delivered' AND gift_wrapping = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app and have a high customer satisfaction score.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id) AND customer_satisfaction_score > 4.5;"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued and have a rating above a certain threshold and are available for shipping and have free returns and are featured and have received positive reviews and have a warranty and are trending and have a limited edition.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True)) AND rating > 4.5 AND available_for_shipping = True AND free_returns = True AND featured = True AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND product_id = reviews_table.product_id) AND warranty = True AND trending = True AND limited_edition = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app and have a high customer satisfaction score and have made repeat purchases.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id) AND customer_satisfaction_score > 4.5 AND EXISTS (SELECT 1 FROM sales_table WHERE purchase_date < DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id);"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, discount applied, shipping method, payment status, delivery status, gift wrapping option, and expedited shipping.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True AND shipping_method = 'express' AND payment_status = 'paid' AND delivery_status = 'delivered' AND gift_wrapping = True AND expedited_shipping = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app and have a high customer satisfaction score and have made repeat purchases and have participated in a survey.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id) AND customer_satisfaction_score > 4.5 AND EXISTS (SELECT 1 FROM sales_table WHERE purchase_date < DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND EXISTS (SELECT 1 FROM surveys_table WHERE customer_id = surveys_table.customer_id);"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued and have a rating above a certain threshold and are available for shipping and have free returns and are featured and have received positive reviews and have a warranty and are trending and have a limited edition and have a special promotion.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True)) AND rating > 4.5 AND available_for_shipping = True AND free_returns = True AND featured = True AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND product_id = reviews_table.product_id) AND warranty = True AND trending = True AND limited_edition = True AND special_promotion = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app and have a high customer satisfaction score and have made repeat purchases and have participated in a survey and have requested a refund.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id) AND customer_satisfaction_score > 4.5 AND EXISTS (SELECT 1 FROM sales_table WHERE purchase_date < DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND EXISTS (SELECT 1 FROM surveys_table WHERE customer_id = surveys_table.customer_id) AND EXISTS (SELECT 1 FROM refunds_table WHERE customer_id = refunds_table.customer_id);"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, discount applied, shipping method, payment status, delivery status, gift wrapping option, expedited shipping, and are part of a bundle offer.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True AND shipping_method = 'express' AND payment_status = 'paid' AND delivery_status = 'delivered' AND gift_wrapping = True AND expedited_shipping = True AND bundle_offer = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app and have a high customer satisfaction score and have made repeat purchases and have participated in a survey and have requested a refund and have contacted customer support.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id) AND customer_satisfaction_score > 4.5 AND EXISTS (SELECT 1 FROM sales_table WHERE purchase_date < DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND EXISTS (SELECT 1 FROM surveys_table WHERE customer_id = surveys_table.customer_id) AND EXISTS (SELECT 1 FROM refunds_table WHERE customer_id = refunds_table.customer_id) AND EXISTS (SELECT 1 FROM customer_support_table WHERE customer_id = customer_support_table.customer_id);"
+    },
+    {
+        'question': "Retrieve the products that have been restocked in the last month or have a price higher than a specified amount and are in a specific category or are discontinued and have a rating above a certain threshold and are available for shipping and have free returns and are featured and have received positive reviews and have a warranty and are trending and have a limited edition and have a special promotion and have additional accessories.",
+        'sql_query': "SELECT * FROM products_table WHERE restock_date >= DATE_SUB(CURRENT_DATE(), INTERVAL 1 MONTH) OR (price > 50 AND (category = 'electronics' OR discontinued = True)) AND rating > 4.5 AND available_for_shipping = True AND free_returns = True AND featured = True AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND product_id = reviews_table.product_id) AND warranty = True AND trending = True AND limited_edition = True AND special_promotion = True AND EXISTS (SELECT 1 FROM accessories_table WHERE product_id = accessories_table.product_id);"
+    },
+    {
+        'question': "Find the customers who made purchases on a specific month and year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app and have a high customer satisfaction score and have made repeat purchases and have participated in a survey and have requested a refund and have contacted customer support and have used a coupon code.",
+        'sql_query': "SELECT customer_id, purchase_date FROM sales_table WHERE DATE_TRUNC('month', purchase_date) = '2023-05-01' AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 500 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id) AND customer_satisfaction_score > 4.5 AND EXISTS (SELECT 1 FROM sales_table WHERE purchase_date < DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND EXISTS (SELECT 1 FROM surveys_table WHERE customer_id = surveys_table.customer_id) AND EXISTS (SELECT 1 FROM refunds_table WHERE customer_id = refunds_table.customer_id) AND EXISTS (SELECT 1 FROM customer_support_table WHERE customer_id = customer_support_table.customer_id) AND EXISTS (SELECT 1 FROM coupon_codes_table WHERE customer_id = coupon_codes_table.customer_id);"
+    },
+    {
+        'question': "List the orders that contain items with a specific attribute, color, brand, type, size, material, category, price range, discount applied, shipping method, payment status, delivery status, gift wrapping option, expedited shipping, bundle offer, and are part of a clearance sale.",
+        'sql_query': "SELECT * FROM orders_table WHERE items LIKE '%attribute_name%' AND items LIKE '%color_name%' AND items LIKE '%brand_name%' AND items LIKE '%type_name%' AND items LIKE '%size_name%' AND items LIKE '%material_name%' AND items LIKE '%category_name%' AND price BETWEEN 50 AND 100 AND discount_applied = True AND shipping_method = 'express' AND payment_status = 'paid' AND delivery_status = 'delivered' AND gift_wrapping = True AND expedited_shipping = True AND bundle_offer = True AND clearance_sale = True;"
+    },
+    {
+        'question': "Find the customers who made purchases on consecutive months of the same year and belong to a specific customer segment and spent more than a specified amount and have a loyalty membership and reside in a specific city and have a preferred payment method and have made a previous purchase in the last month and have provided feedback and have a high credit limit and are subscribed to the newsletter and have placed orders in the last week and have a high order frequency and have received positive reviews and have referred new customers and have participated in a loyalty program and have attended promotional events and have interacted with the mobile app and have a high customer satisfaction score and have made repeat purchases and have participated in a survey and have requested a refund and have contacted customer support and have used a coupon code and have joined a waitlist.",
+        'sql_query': "SELECT DISTINCT customer_id FROM sales_table WHERE DATE_TRUNC('month', purchase_date) IN (SELECT DATE_TRUNC('month', MIN(purchase_date)) + i FROM numbers_table WHERE i < 12) AND YEAR(purchase_date) = 2023 AND customer_segment = 'premium' AND total_amount > 1000 AND loyalty_membership = True AND city = 'New York' AND preferred_payment_method = 'credit card' AND EXISTS (SELECT 1 FROM sales_table WHERE DATE_TRUNC('month', purchase_date) >= DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND feedback IS NOT NULL AND credit_limit > 5000 AND newsletter_subscription = True AND EXISTS (SELECT 1 FROM orders_table WHERE order_date >= DATE_TRUNC('week', CURRENT_DATE()) AND customer_id = orders_table.customer_id) AND order_frequency > 5 AND EXISTS (SELECT 1 FROM reviews_table WHERE review_rating > 4 AND customer_id = reviews_table.customer_id) AND EXISTS (SELECT 1 FROM referrals_table WHERE customer_id = referrals_table.customer_id) AND loyalty_program = True AND EXISTS (SELECT 1 FROM events_table WHERE customer_id = events_table.customer_id) AND EXISTS (SELECT 1 FROM app_interactions_table WHERE customer_id = app_interactions_table.customer_id) AND customer_satisfaction_score > 4.5 AND EXISTS (SELECT 1 FROM sales_table WHERE purchase_date < DATE_TRUNC('month', CURRENT_DATE()) - INTERVAL 1 MONTH AND customer_id = sales_table.customer_id) AND EXISTS (SELECT 1 FROM surveys_table WHERE customer_id = surveys_table.customer_id) AND EXISTS (SELECT 1 FROM refunds_table WHERE customer_id = refunds_table.customer_id) AND EXISTS (SELECT 1 FROM customer_support_table WHERE customer_id = customer_support_table.customer_id) AND EXISTS (SELECT 1 FROM coupon_codes_table WHERE customer_id = coupon_codes_table.customer_id) AND EXISTS (SELECT 1 FROM waitlist_table WHERE customer_id = waitlist_table.customer_id);"
+    }
+]
