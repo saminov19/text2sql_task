@@ -4,11 +4,14 @@ This project demonstrates a Text-to-SQL conversion system using ClickHouse and t
 ## Installation
 Clone the repository:
 
+ ```bash
 git clone https://github.com/your-username/text-to-sql-conversion.git
+ ```
 
 Install the required dependencies:
+ ```bash
 pip install -r requirements.txt
-
+ ```
 
 ## Usage
 To use the Text-to-SQL conversion system, follow these steps:
@@ -29,8 +32,9 @@ Please enter a prompt: How many clicks were there on '2022-01-01' in the bing_ad
 
 The system will generate an SQL query based on the prompt and the selected table:
 
+ ```bash
 SELECT clicks FROM bing_ads WHERE date = '2022-01-01'
-
+ ```
 
 The generated SQL query will be executed on the ClickHouse database and the results will be displayed.
 
