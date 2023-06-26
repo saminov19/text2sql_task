@@ -4,37 +4,16 @@ This project demonstrates a Text-to-SQL conversion system using ClickHouse and O
 ## Installation
 Clone the repository:
 
- ```bash
- git clone https://github.com/your-username/text-to-sql-conversion.git
- ```
-
+git clone https://github.com/your-username/text-to-sql-conversion.git
 
 Install the required dependencies:
- ```bash
 pip install -r requirements.txt
- ```
-
-Configuration
-Open the config.py file and provide the necessary configuration settings:
-
-# ClickHouse database configuration
-host = 'n5kuudqxis.eu-central-1.aws.clickhouse.cloud'
-port = 8443
-username = 'default'
-password = 'vzKIqa77MsfN_'
-
-# OpenAI GPT model configuration
-gpt_model = 'juierror/text-to-sql-with-table-schema'
-Save the config.py file.
 
 
-Usage
+## Usage
 To use the Text-to-SQL conversion system, follow these steps:
 
-Run the main.py file:
-
-python main.py
-
+Run the main.py file
 
 Choose a table from the available options:
 
@@ -43,6 +22,7 @@ Please choose one option:
 2. customers_data
 3. daily_website_visits
 ...
+
 Enter a prompt or question when prompted:
 
 Please enter a prompt: How many clicks were there on '2022-01-01' in the bing_ads table?
@@ -54,9 +34,21 @@ SELECT clicks FROM bing_ads WHERE date = '2022-01-01'
 
 The generated SQL query will be executed on the ClickHouse database and the results will be displayed.
 
-[('100',)]
+## Current Progress
+1. The tool interacts with the Clickhouse database.
+2. The tool asks the user to input table name and a prompt.
+3. The tool converts the prompt to SQL.
+4. The tool uses generated SQL to pull data from Clickhouse database and return the result to the user.
+5. Generated a dataset (dataset.txt) with 100 prompt-sql pairs in order to fine-tune the model in the future.
 
-Limitations
-The system currently supports ClickHouse as the database backend. It may not be compatible with other database systems.
+
+## Limitations
+The system doesn't perform well in converting natural language to SQL yet.
 The system relies on the provided ClickHouse database schema and may not handle complex queries or schema changes.
-The performance and accuracy of the Text-to-SQL conversion depend on the underlying GPT model and the training data.
+The performance and accuracy of the Text-to-SQL conversion depend on the underlying transformer model.
+
+
+## Further Improvements
+1. Fine-tune the model using the collected dataset.
+2. Develop testing methods to evaluate the model and calculate score metrics.
+3. Develop validation techniques to prevent errors while converting text to SQL.
