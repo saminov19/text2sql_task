@@ -4,10 +4,15 @@ This project demonstrates a Text-to-SQL conversion system using ClickHouse and O
 ## Installation
 Clone the repository:
 
-git clone https://github.com/your-username/text-to-sql-conversion.git
+ ```bash
+ git clone https://github.com/your-username/text-to-sql-conversion.git
+ ```
+
 
 Install the required dependencies:
+ ```bash
 pip install -r requirements.txt
+ ```
 
 Configuration
 Open the config.py file and provide the necessary configuration settings:
